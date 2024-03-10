@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.mecanum;
 
+import androidx.annotation.NonNull;
+
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
@@ -25,7 +27,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     protected abstract void updateRobotPose();
     protected abstract void updateDashboard();
 
-    public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Optional<Pose2d> initialPose) {
+    public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, @NonNull Pose2d initialPose) {
         m_mecanumConfigs = mecanumConfigs;
         m_frontLeft = new MotorEx(hardwareMap, m_mecanumConfigs.frontLeftName(), Motor.GoBILDA.RPM_312);
         m_frontRight = new MotorEx(hardwareMap, m_mecanumConfigs.frontRightName(), Motor.GoBILDA.RPM_312);
@@ -35,11 +37,8 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         m_kinematics = new MecanumDriveKinematics(m_mecanumConfigs.frontLeftPosition(), m_mecanumConfigs.frontRightPosition(),
                 m_mecanumConfigs.backLeftPosition(), m_mecanumConfigs.backRightPosition());
 
-        if(initialPose.isPresent()) {
-            m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.get().getRotation());
-        } else {
-            m_odometry = new MecanumDriveOdometry(m_kinematics, Rotation2d.fromDegrees(0));
-        }
+        m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.getRotation());
+
 
 
     }
