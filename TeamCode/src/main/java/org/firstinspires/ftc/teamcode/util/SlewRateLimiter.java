@@ -25,18 +25,13 @@ public class SlewRateLimiter {
     /**
      * Clamps the slew rate between the negative and positive limits.
      * @param input The current value of the controlled value.
-     * @return The slewed rate.
+     * @return The slewed value.
      */
     public double calculate(double input) {
-        if(m_lastValue < input) {
-            m_lastValue += 0.075;
-            return m_lastValue;
-        } else if(m_lastValue > input) {
-            m_lastValue -= 0.075;
-            return m_lastValue;
-        } else {
-            return input;
-        }
+        double delta = input - m_lastValue;
+        double toAdd = MathUtil.clamp(delta,m_negativeRateLimit,m_positiveRateLimit);
+        m_lastValue += toAdd;
+        return m_lastValue;
     }
 
     public double getLastValue() {
