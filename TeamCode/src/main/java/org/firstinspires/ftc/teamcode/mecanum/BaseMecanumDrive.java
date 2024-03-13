@@ -24,10 +24,8 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     protected MecanumConfigs m_mecanumConfigs;
 
     public abstract Rotation2d getHeading();
-    protected abstract void updateRobotPose();
-    protected abstract void updateDashboard();
 
-    public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, @NonNull Pose2d initialPose) {
+    public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Pose2d initialPose) {
         m_mecanumConfigs = mecanumConfigs;
         m_frontLeft = new MotorEx(hardwareMap, m_mecanumConfigs.frontLeftName(), Motor.GoBILDA.RPM_312);
         m_frontRight = new MotorEx(hardwareMap, m_mecanumConfigs.frontRightName(), Motor.GoBILDA.RPM_312);
@@ -38,10 +36,8 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
                 m_mecanumConfigs.backLeftPosition(), m_mecanumConfigs.backRightPosition());
 
         m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.getRotation());
-
-
-
     }
+
     public void move(ChassisSpeeds speeds) {
         speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -1, 1) * m_mecanumConfigs.maxRobotSpeedMps();
         speeds.vyMetersPerSecond = MathUtil.clamp(speeds.vyMetersPerSecond, -1, 1) * m_mecanumConfigs.maxRobotSpeedMps();
@@ -72,9 +68,4 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         return m_odometry.getPoseMeters();
     }
 
-    @Override
-    public void periodic() {
-        updateDashboard();
-        updateRobotPose();
-    }
 }
