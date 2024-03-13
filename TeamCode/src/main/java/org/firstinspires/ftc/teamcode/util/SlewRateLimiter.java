@@ -5,8 +5,7 @@ import com.arcrobotics.ftclib.util.Timing;
 public class SlewRateLimiter {
     private double m_positiveRateLimit, m_negativeRateLimit;
     private double m_lastValue;
-    private double m_lastValueTimestamp = 0;
-    private Timing.Timer m_elapsedTime;
+
     /**
      * Creates a new SlewRateLimiter with the given positive limits and initial value.
      * @param positiveRateLimit - The rate-of-change in the positive direction, in units per second.
@@ -19,7 +18,6 @@ public class SlewRateLimiter {
         m_positiveRateLimit = positiveRateLimit;
         m_negativeRateLimit = negativeRateLimit;
         m_lastValue = initialValue;
-        m_elapsedTime = timer;
     }
 
     /**
