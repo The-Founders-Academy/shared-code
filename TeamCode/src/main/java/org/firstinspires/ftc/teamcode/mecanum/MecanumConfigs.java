@@ -18,8 +18,8 @@ public class MecanumConfigs {
     private double m_maxRobotRotationRps = 6.28;
     private String m_frontLeftName = "fL";
     private String m_frontRightName = "fR";
-    private String m_backLeftName = "fL";
-    private String m_backRightName = "fR";
+    private String m_backLeftName = "bL";
+    private String m_backRightName = "bR";
 
     public MecanumConfigs() {
     }
