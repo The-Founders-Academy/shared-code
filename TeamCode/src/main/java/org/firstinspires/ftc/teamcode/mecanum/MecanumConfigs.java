@@ -16,6 +16,7 @@ public class MecanumConfigs {
     private double m_driveToTargetToleranceRadians = 0.1;
     private double m_maxRobotSpeedMps = 3;
     private double m_maxRobotRotationRps = 6.28;
+    private double m_metersPerTick = 0.00056;
     private String m_frontLeftName = "fL";
     private String m_frontRightName = "fR";
     private String m_backLeftName = "bL";
@@ -78,6 +79,11 @@ public class MecanumConfigs {
         return this;
     }
 
+    public MecanumConfigs metersPerTick(double mpt) {
+        m_metersPerTick = mpt;
+        return this;
+    }
+
     public String frontLeftName() {
         return m_frontLeftName;
     }
@@ -108,5 +114,9 @@ public class MecanumConfigs {
 
     public Translation2d backRightPosition() {
         return m_backRightPositionMeters;
+    }
+
+    public double getMetersPertick() {
+        return m_metersPerTick;
     }
 }
