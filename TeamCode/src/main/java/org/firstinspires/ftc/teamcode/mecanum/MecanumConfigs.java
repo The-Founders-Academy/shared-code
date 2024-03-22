@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.mecanum;
 
 import com.arcrobotics.ftclib.geometry.Translation2d;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 public class MecanumConfigs {
@@ -17,6 +19,7 @@ public class MecanumConfigs {
     private double m_maxRobotSpeedMps = 3;
     private double m_maxRobotRotationRps = 6.28;
     private double m_metersPerTick = 0.00056;
+    private Motor.RunMode m_runMode = Motor.RunMode.VelocityControl;
     private String m_frontLeftName = "fL";
     private String m_frontRightName = "fR";
     private String m_backLeftName = "bL";
@@ -25,56 +28,32 @@ public class MecanumConfigs {
     public MecanumConfigs() {
     }
 
-    public PIDCoefficients translationPIDValues() {
-        return m_translationPIDValues;
-    }
-
-    public MecanumConfigs setTranslationPIDValues(PIDCoefficients translationPIDValues) {
+    public MecanumConfigs TranslationPIDValues(PIDCoefficients translationPIDValues) {
         m_translationPIDValues = translationPIDValues;
         return this;
     }
 
-    public PIDCoefficients rotationPIDValues() {
-        return m_rotationPIDValues;
-    }
-
-    public MecanumConfigs setRotationPIDValues(PIDCoefficients rotationPIDValues) {
+    public MecanumConfigs RotationPIDValues(PIDCoefficients rotationPIDValues) {
         m_rotationPIDValues = rotationPIDValues;
         return this;
     }
 
-    public double driveToTargetToleranceMeters() {
-        return m_driveToTargetToleranceMeters;
-    }
-
-    public MecanumConfigs setDriveToTargetToleranceMeters(double driveToTargetToleranceMeters) {
+    public MecanumConfigs DriveToTargetToleranceMeters(double driveToTargetToleranceMeters) {
         m_driveToTargetToleranceMeters = driveToTargetToleranceMeters;
         return this;
     }
 
-    public double driveToTargetToleranceRadians() {
-        return m_driveToTargetToleranceRadians;
-    }
-
-    public MecanumConfigs setDriveToTargetToleranceRadians(double driveToTargetToleranceRadians) {
+    public MecanumConfigs DriveToTargetToleranceRadians(double driveToTargetToleranceRadians) {
         m_driveToTargetToleranceRadians = driveToTargetToleranceRadians;
         return this;
     }
 
-    public double maxRobotSpeedMps() {
-        return m_maxRobotSpeedMps;
-    }
-
-    public MecanumConfigs setMaxRobotSpeedMps(double maxRobotSpeedMps) {
+    public MecanumConfigs maxRobotSpeedMps(double maxRobotSpeedMps) {
         m_maxRobotSpeedMps = maxRobotSpeedMps;
         return this;
     }
 
-    public double maxRobotRotationRps() {
-        return m_maxRobotRotationRps;
-    }
-
-    public MecanumConfigs setMaxRobotRotationRps(double maxRobotRotationRps) {
+    public MecanumConfigs maxRobotRotationRps(double maxRobotRotationRps) {
         m_maxRobotRotationRps = maxRobotRotationRps;
         return this;
     }
@@ -84,39 +63,81 @@ public class MecanumConfigs {
         return this;
     }
 
-    public String frontLeftName() {
+    public MecanumConfigs wheelPIDValues(PIDCoefficients pids) {
+        m_wheelPIDValues = pids;
+        return this;
+    }
+
+    public MecanumConfigs runMode(Motor.RunMode mode) {
+        m_runMode = mode;
+        return this;
+    }
+
+    public PIDCoefficients getTranslationPIDValues() {
+        return m_translationPIDValues;
+    }
+
+    public PIDCoefficients getRotationPIDValues() {
+        return m_rotationPIDValues;
+    }
+
+    public double getDriveToTargetToleranceMeters() {
+        return m_driveToTargetToleranceMeters;
+    }
+
+    public double getDriveToTargetToleranceRadians() {
+        return m_driveToTargetToleranceRadians;
+    }
+
+    public double getMaxRobotSpeedMps() {
+        return m_maxRobotSpeedMps;
+    }
+
+    public double getMaxRobotRotationRps() {
+        return m_maxRobotRotationRps;
+    }
+
+    public String getFrontLeftName() {
         return m_frontLeftName;
     }
 
-    public String frontRightName() {
+    public String getFrontRightName() {
         return m_frontRightName;
     }
 
-    public String backLeftName() {
+    public String getBackLeftName() {
         return m_backLeftName;
     }
 
-    public String backRightName() {
+    public String getBackRightName() {
         return m_backRightName;
     }
 
-    public Translation2d frontLeftPosition() {
+    public Translation2d getFrontLeftPosition() {
         return m_frontLeftPositionMeters;
     }
 
-    public Translation2d frontRightPosition() {
+    public Translation2d getFrontRightPosition() {
         return m_frontRightPositionMeters;
     }
 
-    public Translation2d backLeftPosition() {
+    public Translation2d getBackLeftPosition() {
         return m_backLeftPositionMeters;
     }
 
-    public Translation2d backRightPosition() {
+    public Translation2d getBackRightPosition() {
         return m_backRightPositionMeters;
     }
 
-    public double getMetersPertick() {
+    public double getMetersPerTick() {
         return m_metersPerTick;
+    }
+
+    public PIDCoefficients getWheelPIDValues() {
+        return m_wheelPIDValues;
+    }
+
+    public Motor.RunMode getRunMode() {
+        return m_runMode;
     }
 }
