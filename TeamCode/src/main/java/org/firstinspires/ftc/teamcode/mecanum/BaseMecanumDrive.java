@@ -43,11 +43,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.getRotation());
     }
 
-    public void move(ChassisSpeeds speeds) {
-        speeds.vxMetersPerSecond = MathUtil.clamp(speeds.vxMetersPerSecond, -1, 1) * m_mecanumConfigs.maxRobotSpeedMps();
-        speeds.vyMetersPerSecond = MathUtil.clamp(speeds.vyMetersPerSecond, -1, 1) * m_mecanumConfigs.maxRobotSpeedMps();
-        speeds.omegaRadiansPerSecond = MathUtil.clamp(speeds.omegaRadiansPerSecond, -1, 1) * m_mecanumConfigs.maxRobotRotationRps();
-
+    protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
         m_frontLeft.setVelocity(wheelSpeeds.frontLeftMetersPerSecond);
         m_frontRight.setVelocity(wheelSpeeds.frontRightMetersPerSecond);
@@ -56,12 +52,18 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     }
 
     public void moveRobotRelative(double xPercentVelocity, double yPercentVelocity, double omegaPercentVelocity) {
-        ChassisSpeeds speeds = new ChassisSpeeds(xPercentVelocity, yPercentVelocity, omegaPercentVelocity);
+        double xVelMps = xPercentVelocity * m_mecanumConfigs.maxRobotSpeedMps();
+        double yVelMps = yPercentVelocity * m_mecanumConfigs.maxRobotSpeedMps();
+        double omegaVelRps = omegaPercentVelocity * m_mecanumConfigs.maxRobotRotationRps();
+        ChassisSpeeds speeds = new ChassisSpeeds(xVelMps, yVelMps, omegaVelRps);
         move(speeds);
     }
 
     public void moveFieldRelative(double xPercentVelocity, double yPercentVelocity, double omegaPercentVelocity) {
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xPercentVelocity, yPercentVelocity, omegaPercentVelocity, getHeading());
+        double xVelMps = xPercentVelocity * m_mecanumConfigs.maxRobotSpeedMps();
+        double yVelMps = yPercentVelocity * m_mecanumConfigs.maxRobotSpeedMps();
+        double omegaVelRps = omegaPercentVelocity * m_mecanumConfigs.maxRobotRotationRps();
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(xVelMps, yVelMps, omegaVelRps, getHeading());
         move(speeds);
     }
 
