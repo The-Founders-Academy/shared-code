@@ -43,7 +43,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.getRotation());
     }
 
-    public void move(ChassisSpeeds speeds) {
+    protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
         m_frontLeft.setVelocity(wheelSpeeds.frontLeftMetersPerSecond * m_mecanumConfigs.getMetersPertick());
         m_frontRight.setVelocity(wheelSpeeds.frontRightMetersPerSecond * m_mecanumConfigs.getMetersPertick());
