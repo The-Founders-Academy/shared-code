@@ -45,10 +45,10 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
     protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        m_frontLeft.setVelocity(wheelSpeeds.frontLeftMetersPerSecond * m_mecanumConfigs.getMetersPertick());
-        m_frontRight.setVelocity(wheelSpeeds.frontRightMetersPerSecond * m_mecanumConfigs.getMetersPertick());
-        m_backLeft.setVelocity(wheelSpeeds.rearLeftMetersPerSecond * m_mecanumConfigs.getMetersPertick());
-        m_backRight.setVelocity(wheelSpeeds.rearRightMetersPerSecond * m_mecanumConfigs.getMetersPertick());
+        m_frontLeft.setVelocity(wheelSpeeds.frontLeftMetersPerSecond / m_mecanumConfigs.getMetersPertick());
+        m_frontRight.setVelocity(wheelSpeeds.frontRightMetersPerSecond / m_mecanumConfigs.getMetersPertick());
+        m_backLeft.setVelocity(wheelSpeeds.rearLeftMetersPerSecond / m_mecanumConfigs.getMetersPertick());
+        m_backRight.setVelocity(wheelSpeeds.rearRightMetersPerSecond / m_mecanumConfigs.getMetersPertick());
     }
 
     public void moveRobotRelative(double xPercentVelocity, double yPercentVelocity, double omegaPercentVelocity) {

@@ -11,13 +11,17 @@ import org.firstinspires.ftc.teamcode.util.SlewRateLimiter;
 
 public class CommandGamepad extends SubsystemBase {
     private GamepadEx m_gamepad;
-    private SlewRateLimiter m_slewRateLimiterLeft;
-    private SlewRateLimiter m_slewRateLimiterRight;
+    private SlewRateLimiter m_slewRateLimiterLeftX;
+    private SlewRateLimiter m_slewRateLimiterLeftY;
+    private SlewRateLimiter m_slewRateLimiterRightX;
+    private SlewRateLimiter m_slewRateLimiterRightY;
 
-    public CommandGamepad(Gamepad gamepad, double leftStickSlewRate, double rightStickSlewRate, Timing.Timer timer) {
+    public CommandGamepad(Gamepad gamepad, double leftStickSlewRate, double rightStickSlewRate) {
         m_gamepad = new GamepadEx(gamepad);
-        m_slewRateLimiterLeft = new SlewRateLimiter(-leftStickSlewRate, leftStickSlewRate, 0, timer);
-        m_slewRateLimiterRight = new SlewRateLimiter(-rightStickSlewRate, rightStickSlewRate, 0, timer);
+        m_slewRateLimiterLeftX = new SlewRateLimiter(leftStickSlewRate, -leftStickSlewRate, 0);
+        m_slewRateLimiterLeftY = new SlewRateLimiter(leftStickSlewRate, -leftStickSlewRate, 0);
+        m_slewRateLimiterRightX = new SlewRateLimiter(rightStickSlewRate, -rightStickSlewRate, 0);
+        m_slewRateLimiterRightY = new SlewRateLimiter(rightStickSlewRate, -rightStickSlewRate, 0);
     }
 
     public GamepadButton buttonX() {
@@ -69,19 +73,19 @@ public class CommandGamepad extends SubsystemBase {
     }
 
     public double getRightSlewedX() {
-        return m_slewRateLimiterRight.calculate(m_gamepad.getRightX());
+        return m_slewRateLimiterRightX.calculate(m_gamepad.getRightX());
     }
 
     public double getLeftSlewedX() {
-        return m_slewRateLimiterLeft.calculate(m_gamepad.getLeftX());
+        return m_slewRateLimiterLeftX.calculate(m_gamepad.getLeftX());
     }
 
     public double getRightSlewedY() {
-        return m_slewRateLimiterRight.calculate(m_gamepad.getRightY());
+        return m_slewRateLimiterRightY.calculate(m_gamepad.getRightY());
     }
 
     public double getLeftSlewedY() {
-        return m_slewRateLimiterRight.calculate(m_gamepad.getLeftX());
+        return m_slewRateLimiterLeftY.calculate(m_gamepad.getLeftY());
     }
 
     public double getLeftAngleRadians() {
