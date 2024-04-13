@@ -32,10 +32,10 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         m_backLeft = new MotorEx(hardwareMap, m_mecanumConfigs.getBackLeftName(), Motor.GoBILDA.RPM_312);
         m_backRight = new MotorEx(hardwareMap, m_mecanumConfigs.getBackRightName(), Motor.GoBILDA.RPM_312);
 
-        m_frontLeft.setRunMode(Motor.RunMode.VelocityControl);
-        m_frontRight.setRunMode(Motor.RunMode.VelocityControl);
-        m_backLeft.setRunMode(Motor.RunMode.VelocityControl);
-        m_backRight.setRunMode(Motor.RunMode.VelocityControl);
+        m_frontLeft.setRunMode(m_mecanumConfigs.getRunMode());
+        m_frontRight.setRunMode(m_mecanumConfigs.getRunMode());
+        m_backLeft.setRunMode(m_mecanumConfigs.getRunMode());
+        m_backRight.setRunMode(m_mecanumConfigs.getRunMode());
 
         m_kinematics = new MecanumDriveKinematics(m_mecanumConfigs.getFrontLeftPosition(), m_mecanumConfigs.getFrontRightPosition(),
                 m_mecanumConfigs.getBackLeftPosition(), m_mecanumConfigs.getBackRightPosition());
