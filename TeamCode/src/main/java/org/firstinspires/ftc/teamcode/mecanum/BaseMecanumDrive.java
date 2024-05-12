@@ -13,6 +13,7 @@ import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveOdometry;
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.util.DriverStation;
 import org.firstinspires.ftc.teamcode.util.MathUtil;
 
 import java.util.Optional;
@@ -20,10 +21,11 @@ import java.util.Optional;
 public abstract class BaseMecanumDrive extends SubsystemBase {
     protected MotorEx m_frontLeft, m_frontRight, m_backLeft, m_backRight;
     protected MecanumDriveKinematics m_kinematics;
-    protected MecanumDriveOdometry m_odometry;
     protected MecanumConfigs m_mecanumConfigs;
 
     public abstract Rotation2d getHeading();
+    public abstract Pose2d getPose();
+    public abstract void resetPose(Pose2d pose);
 
     public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Pose2d initialPose) {
         m_mecanumConfigs = mecanumConfigs;
@@ -40,7 +42,6 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         m_kinematics = new MecanumDriveKinematics(m_mecanumConfigs.getFrontLeftPosition(), m_mecanumConfigs.getFrontRightPosition(),
                 m_mecanumConfigs.getBackLeftPosition(), m_mecanumConfigs.getBackRightPosition());
 
-        m_odometry = new MecanumDriveOdometry(m_kinematics, initialPose.getRotation());
     }
 
     protected void move(ChassisSpeeds speeds) {
@@ -63,16 +64,12 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         double vXMps = xPercentVelocity * m_mecanumConfigs.getMaxRobotSpeedMps();
         double vYMps = yPercentVelocity * m_mecanumConfigs.getMaxRobotSpeedMps();
         double omegaRps = omegaPercentVelocity * m_mecanumConfigs.getMaxRobotRotationRps();
-        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vXMps, vYMps, omegaRps, getHeading());
+        ChassisSpeeds speeds;
+        if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.BLUE) {
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vXMps, vYMps, omegaRps, getHeading().minus(Rotation2d.fromDegrees(180)));
+        } else {
+            speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vXMps, vYMps, omegaRps, getHeading());
+        }
         move(speeds);
     }
-
-    public void resetPose(Pose2d pose) {
-        m_odometry.resetPosition(pose, getHeading());
-    }
-
-    public Pose2d getPose() {
-        return m_odometry.getPoseMeters();
-    }
-
 }
