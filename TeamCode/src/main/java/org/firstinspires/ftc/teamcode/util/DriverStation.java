@@ -54,7 +54,6 @@ public class DriverStation {
     public void setTelemetry(Telemetry telemetry) {
         synchronized(telemetryMutex) {
             driverStation.telemetry = telemetry;
-            driverStation.telemetry.setAutoClear(false); // This stops asynchronous calls to telemetry from clearing the screen, so we can update telemetry from different commands etc
         }
     }
 
