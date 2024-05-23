@@ -7,15 +7,10 @@ import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 public class MecanumConfigs {
     // Default values
-    private PIDCoefficients m_wheelPIDValues = new PIDCoefficients(0.1, 0, 0);
-    private PIDCoefficients m_translationPIDValues = new PIDCoefficients(0.1, 0, 0);
-    private PIDCoefficients m_rotationPIDValues = new PIDCoefficients(0.1, 0, 0);
     private Translation2d m_frontLeftPositionMeters = new Translation2d(0.178, 0.168);
     private Translation2d m_frontRightPositionMeters = new Translation2d(0.178, -0.168);
     private Translation2d m_backLeftPositionMeters = new Translation2d(-0.178, 0.168);
     private Translation2d m_backRightPositionMeters = new Translation2d(-0.178, -0.168);
-    private double m_driveToTargetToleranceMeters = 0.3;
-    private double m_driveToTargetToleranceRadians = 0.1;
     private double m_maxRobotSpeedMps = 3;
     private double m_maxRobotRotationRps = 6.28;
     private double m_metersPerTick = 0.00056;
@@ -26,26 +21,6 @@ public class MecanumConfigs {
     private String m_backRightName = "bR";
 
     public MecanumConfigs() {
-    }
-
-    public MecanumConfigs TranslationPIDValues(PIDCoefficients translationPIDValues) {
-        m_translationPIDValues = translationPIDValues;
-        return this;
-    }
-
-    public MecanumConfigs RotationPIDValues(PIDCoefficients rotationPIDValues) {
-        m_rotationPIDValues = rotationPIDValues;
-        return this;
-    }
-
-    public MecanumConfigs DriveToTargetToleranceMeters(double driveToTargetToleranceMeters) {
-        m_driveToTargetToleranceMeters = driveToTargetToleranceMeters;
-        return this;
-    }
-
-    public MecanumConfigs DriveToTargetToleranceRadians(double driveToTargetToleranceRadians) {
-        m_driveToTargetToleranceRadians = driveToTargetToleranceRadians;
-        return this;
     }
 
     public MecanumConfigs maxRobotSpeedMps(double maxRobotSpeedMps) {
@@ -63,30 +38,9 @@ public class MecanumConfigs {
         return this;
     }
 
-    public MecanumConfigs wheelPIDValues(PIDCoefficients pids) {
-        m_wheelPIDValues = pids;
-        return this;
-    }
-
     public MecanumConfigs runMode(Motor.RunMode mode) {
         m_runMode = mode;
         return this;
-    }
-
-    public PIDCoefficients getTranslationPIDValues() {
-        return m_translationPIDValues;
-    }
-
-    public PIDCoefficients getRotationPIDValues() {
-        return m_rotationPIDValues;
-    }
-
-    public double getDriveToTargetToleranceMeters() {
-        return m_driveToTargetToleranceMeters;
-    }
-
-    public double getDriveToTargetToleranceRadians() {
-        return m_driveToTargetToleranceRadians;
     }
 
     public double getMaxRobotSpeedMps() {
@@ -131,10 +85,6 @@ public class MecanumConfigs {
 
     public double getMetersPerTick() {
         return m_metersPerTick;
-    }
-
-    public PIDCoefficients getWheelPIDValues() {
-        return m_wheelPIDValues;
     }
 
     public Motor.RunMode getRunMode() {
