@@ -5,16 +5,20 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
+/**
+ * This class allows the programmers to hold all physical drivetrain constants in one file. It also allows for quick adjustment if future robots
+ * have different drivetrains.
+ */
 public class MecanumConfigs {
-    // Default values
+    // Default values. All values were tuned with the 2023-2024 robot in mind. Future iterations may require adjustments
     private Translation2d m_frontLeftPositionMeters = new Translation2d(0.178, 0.168);
     private Translation2d m_frontRightPositionMeters = new Translation2d(0.178, -0.168);
     private Translation2d m_backLeftPositionMeters = new Translation2d(-0.178, 0.168);
     private Translation2d m_backRightPositionMeters = new Translation2d(-0.178, -0.168);
     private double m_maxRobotSpeedMps = 3;
     private double m_maxRobotRotationRps = 6.28;
-    private double m_metersPerTick = 0.00056;
-    private Motor.RunMode m_runMode = Motor.RunMode.VelocityControl;
+    private double m_metersPerTick = 0.00056; // Based on wheel geometry
+    private Motor.RunMode m_runMode = Motor.RunMode.RawPower;
     private String m_frontLeftName = "fL";
     private String m_frontRightName = "fR";
     private String m_backLeftName = "bL";
