@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.mecanum;
 
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -26,6 +27,29 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     public abstract Rotation2d getHeading();
     public abstract Pose2d getPose();
     public abstract void resetPose(Pose2d pose);
+
+
+      /*
+    This is how the PID loop will look in pseudocode.
+
+    ... set PID setpoints up here
+
+    setTargetPose(somePose);
+    while not atTargetPose():
+        moveWithPID();
+        tunePIDs();
+    resetPIDs();
+
+     */
+    public abstract void setTargetPose(Pose2d pose); // Set target translation/rotation in field relative coordinates
+    public abstract boolean atTargetPose(); // Returns whether the robot is within margin of error of target
+    public abstract void moveWithPID(); // Move field relative (not driver relative) towards the setpoint
+    public abstract void resetPIDs(); // Reset the setpoints of each PID
+    public abstract void tunePIDs(); // Retrieve PID values from dashboard
+    protected PIDController m_translationXController;
+    protected PIDController m_translationYController;
+    protected PIDController m_rotationController;
+
 
     public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Pose2d initialPose, Alliance alliance) {
         m_mecanumConfigs = mecanumConfigs;
