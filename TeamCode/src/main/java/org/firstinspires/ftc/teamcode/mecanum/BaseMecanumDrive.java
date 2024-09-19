@@ -73,10 +73,10 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
     protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        m_frontLeft.set(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond));
-        m_frontRight.set(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond));
-        m_backLeft.set(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond));
-        m_backRight.set(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond));
+        m_frontLeft.set(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
+        m_frontRight.set(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
+        m_backLeft.set(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
+        m_backRight.set(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
 
     }
 
