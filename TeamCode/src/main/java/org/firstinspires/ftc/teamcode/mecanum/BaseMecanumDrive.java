@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.mecanum;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.wpilibcontroller.SimpleMotorFeedforward;
 import com.arcrobotics.ftclib.geometry.Pose2d;
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -19,6 +20,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
         RED, BLUE
     }
 
+    protected SimpleMotorFeedforward m_frontLeftFF, m_frontRightFF, m_backLeftFF, m_backRightFF;
     protected MotorEx m_frontLeft, m_frontRight, m_backLeft, m_backRight;
     protected MecanumDriveKinematics m_kinematics;
     protected MecanumConfigs m_mecanumConfigs;
@@ -71,10 +73,11 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
     protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        m_frontLeft.setVelocity(wheelSpeeds.frontLeftMetersPerSecond / m_mecanumConfigs.getMetersPerTick());
-        m_frontRight.setVelocity(wheelSpeeds.frontRightMetersPerSecond / m_mecanumConfigs.getMetersPerTick());
-        m_backLeft.setVelocity(wheelSpeeds.rearLeftMetersPerSecond / m_mecanumConfigs.getMetersPerTick());
-        m_backRight.setVelocity(wheelSpeeds.rearRightMetersPerSecond / m_mecanumConfigs.getMetersPerTick());
+        m_frontLeft.set(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond));
+        m_frontRight.set(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond));
+        m_backLeft.set(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond));
+        m_backRight.set(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond));
+
     }
 
     /**
