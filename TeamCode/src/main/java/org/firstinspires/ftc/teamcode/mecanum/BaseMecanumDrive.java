@@ -43,14 +43,9 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     resetPIDs();
 
      */
-    public abstract void setTargetPose(Pose2d pose); // Set target translation/rotation in field relative coordinates
-    public abstract boolean atTargetPose(); // Returns whether the robot is within margin of error of target
-    public abstract void moveWithPID(); // Move field relative (not driver relative) towards the setpoint
-    public abstract void resetPIDs(); // Reset the setpoints of each PID
-    public abstract void tunePIDs(); // Retrieve PID values from dashboard
-    protected PIDController m_translationXController;
-    protected PIDController m_translationYController;
-    protected PIDController m_rotationController;
+    protected PIDController m_translationXController = new PIDController(0, 0, 0);
+    protected PIDController m_translationYController = new PIDController(0, 0, 0);;
+    protected PIDController m_rotationController = new PIDController(0, 0, 0);;
 
 
     public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Pose2d initialPose, Alliance alliance) {
@@ -109,5 +104,13 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
             speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vXMps, vYMps, omegaRps, getHeading());
         }
         move(speeds);
+    }
+
+    public void moveFieldRelativeForPID() {
+        double xVel = m_translationXController.calculate() / m_mecanumConfigs.getMaxRobotSpeedMps();
+        double yVel = m_translationYController.calculate() / m_mecanumConfigs.getMaxRobotSpeedMps();
+        double angularVel = m_rotationController.calculate() / m_mecanumConfigs.getMaxRobotRotationRps();
+
+        moveFieldRelative(xVel, yVel, angularVel);
     }
 }
