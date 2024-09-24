@@ -23,7 +23,6 @@ public class MecanumConfigs {
     private String m_frontRightName = "fR";
     private String m_backLeftName = "bL";
     private String m_backRightName = "bR";
-    private double m_maxMotorVoltage = 12;
 
     public MecanumConfigs() {
     }
@@ -45,11 +44,6 @@ public class MecanumConfigs {
 
     public MecanumConfigs runMode(Motor.RunMode mode) {
         m_runMode = mode;
-        return this;
-    }
-
-    public MecanumConfigs maxMotorVoltage(double voltage) {
-        m_maxMotorVoltage = voltage;
         return this;
     }
 
@@ -99,9 +93,5 @@ public class MecanumConfigs {
 
     public Motor.RunMode getRunMode() {
         return m_runMode;
-    }
-
-    public double getMaxMotorVoltage() {
-        return m_maxMotorVoltage;
     }
 }

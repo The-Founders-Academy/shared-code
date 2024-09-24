@@ -13,6 +13,8 @@ import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveKinematics
 import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.util.MathUtil;
+
 
 public abstract class BaseMecanumDrive extends SubsystemBase {
 
@@ -25,11 +27,15 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     protected MecanumDriveKinematics m_kinematics;
     protected MecanumConfigs m_mecanumConfigs;
     protected Alliance m_alliance;
+    protected Pose2d m_robotPose;
 
     public abstract Rotation2d getHeading();
     public abstract Pose2d getPose();
     public abstract void resetPose(Pose2d pose);
 
+    protected double m_kS = 0;
+    protected double m_kV = 0;
+    protected double m_kA = 0;
 
       /*
     This is how the PID loop will look in pseudocode.
@@ -68,11 +74,10 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
     protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        m_frontLeft.set(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
-        m_frontRight.set(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
-        m_backLeft.set(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
-        m_backRight.set(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond) / m_mecanumConfigs.getMaxMotorVoltage());
-
+        m_frontLeft.setVelocity(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond));
+        m_frontRight.setVelocity(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond));
+        m_backLeft.setVelocity(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond));
+        m_backRight.setVelocity(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond));
     }
 
     /**
@@ -107,10 +112,24 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     }
 
     public void moveFieldRelativeForPID() {
-        double xVel = m_translationXController.calculate() / m_mecanumConfigs.getMaxRobotSpeedMps();
-        double yVel = m_translationYController.calculate() / m_mecanumConfigs.getMaxRobotSpeedMps();
-        double angularVel = m_rotationController.calculate() / m_mecanumConfigs.getMaxRobotRotationRps();
+        double vX = MathUtil.clamp(m_translationXController.calculate(m_robotPose.getX()),
+                -m_mecanumConfigs.getMaxRobotSpeedMps(),
+                m_mecanumConfigs.getMaxRobotSpeedMps());
+        double vY = MathUtil.clamp(m_translationYController.calculate(m_robotPose.getY()),
+                -m_mecanumConfigs.getMaxRobotSpeedMps(),
+                m_mecanumConfigs.getMaxRobotSpeedMps());
 
-        moveFieldRelative(xVel, yVel, angularVel);
+        // Do some angle wrapping to ensure the shortest path is taken to get to the rotation target
+        double normalizedRotationRad = m_robotPose.getHeading();
+        if(normalizedRotationRad < 0) {
+            normalizedRotationRad = m_robotPose.getHeading() + 2 * Math.PI; // Normalize to [0, 2PI]
+        }
+
+        double vOmega = MathUtil.clamp(m_rotationController.calculate(normalizedRotationRad),
+                -m_mecanumConfigs.getMaxRobotRotationRps(),
+                m_mecanumConfigs.getMaxRobotRotationRps());
+
+        ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vY, -vX, vOmega, getHeading()); // Transform the x and y coordinates to account for differences between global field coordinates and driver field coordinates
+        move(speeds);
     }
 }
