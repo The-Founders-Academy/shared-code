@@ -136,7 +136,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     }
 
     /**
-     * Simultaneously resets all four motor feedforward setpoints while updating their kS and kV values.
+     * Simultaneously updates all four motor feedforward kS and kV values.
      * @param kS The desired kS value.
      * @param kV The desired kV value.
      */
@@ -148,7 +148,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     }
 
     /**
-     * Simultaneously resets all four motor feedforward setpoints while updating their kS, kV, and kA values.
+     * Simultaneously updates all four motor feedforward kS, kV, and kA values.
      * @param kS The desired kS value.
      * @param kV The desired kV value.
      * @param kA The desired kA value.
