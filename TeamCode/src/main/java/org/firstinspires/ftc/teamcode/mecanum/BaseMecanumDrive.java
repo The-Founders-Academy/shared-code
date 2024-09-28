@@ -55,6 +55,8 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
 
     public BaseMecanumDrive(HardwareMap hardwareMap, MecanumConfigs mecanumConfigs, Pose2d initialPose, Alliance alliance) {
+        resetFeedForward(0 , 0);
+
         m_mecanumConfigs = mecanumConfigs;
         m_frontLeft = new MotorEx(hardwareMap, m_mecanumConfigs.getFrontLeftName(), Motor.GoBILDA.RPM_312);
         m_frontRight = new MotorEx(hardwareMap, m_mecanumConfigs.getFrontRightName(), Motor.GoBILDA.RPM_312);
@@ -131,5 +133,30 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
         ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vY, -vX, vOmega, getHeading()); // Transform the x and y coordinates to account for differences between global field coordinates and driver field coordinates
         move(speeds);
+    }
+
+    /**
+     * Simultaneously resets all four motor feedforward setpoints while updating their kS and kV values.
+     * @param kS The desired kS value.
+     * @param kV The desired kV value.
+     */
+    protected void resetFeedForward(double kS, double kV) {
+        m_frontLeftFF = new SimpleMotorFeedforward(kS, kV);
+        m_frontRightFF = new SimpleMotorFeedforward(kS, kV);
+        m_backLeftFF = new SimpleMotorFeedforward(kS, kV);
+        m_backRightFF = new SimpleMotorFeedforward(kS, kV);
+    }
+
+    /**
+     * Simultaneously resets all four motor feedforward setpoints while updating their kS, kV, and kA values.
+     * @param kS The desired kS value.
+     * @param kV The desired kV value.
+     * @param kA The desired kA value.
+     */
+    protected void resetFeedForward(double kS, double kV, double kA) {
+        m_frontLeftFF = new SimpleMotorFeedforward(kS, kV, kA);
+        m_frontRightFF = new SimpleMotorFeedforward(kS, kV, kA);
+        m_backLeftFF = new SimpleMotorFeedforward(kS, kV, kA);
+        m_backRightFF = new SimpleMotorFeedforward(kS, kV, kA);
     }
 }
