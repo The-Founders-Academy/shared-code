@@ -37,18 +37,18 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     protected double m_kV = 0;
     protected double m_kA = 0;
 
-      /*
-    This is how the PID loop will look in pseudocode.
+    /*
+  This is how the PID loop will look in pseudocode.
 
-    ... set PID setpoints up here
+  ... set PID setpoints up here
 
-    setTargetPose(somePose);
-    while not atTargetPose():
-        moveWithPID();
-        tunePIDs();
-    resetPIDs();
+  setTargetPose(somePose);
+  while not atTargetPose():
+      moveWithPID();
+      tunePIDs();
+  resetPIDs();
 
-     */
+   */
     protected PIDController m_translationXController = new PIDController(0, 0, 0);
     protected PIDController m_translationYController = new PIDController(0, 0, 0);;
     protected PIDController m_rotationController = new PIDController(0, 0, 0);;
@@ -76,10 +76,10 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
 
     protected void move(ChassisSpeeds speeds) {
         MecanumDriveWheelSpeeds wheelSpeeds = m_kinematics.toWheelSpeeds(speeds);
-        m_frontLeft.setVelocity(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond));
-        m_frontRight.setVelocity(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond));
-        m_backLeft.setVelocity(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond));
-        m_backRight.setVelocity(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond));
+        m_frontLeft.setVelocity(m_frontLeftFF.calculate(wheelSpeeds.frontLeftMetersPerSecond * m_mecanumConfigs.getTicksPerMeter()));
+        m_frontRight.setVelocity(m_frontRightFF.calculate(wheelSpeeds.frontRightMetersPerSecond * m_mecanumConfigs.getTicksPerMeter()));
+        m_backLeft.setVelocity(m_backLeftFF.calculate(wheelSpeeds.rearLeftMetersPerSecond * m_mecanumConfigs.getTicksPerMeter()));
+        m_backRight.setVelocity(m_backRightFF.calculate(wheelSpeeds.rearRightMetersPerSecond * m_mecanumConfigs.getTicksPerMeter()));
     }
 
     /**
@@ -102,6 +102,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
      */
     public void moveFieldRelative(double xPercentVelocity, double yPercentVelocity, double omegaPercentVelocity) {
         double vXMps = xPercentVelocity * m_mecanumConfigs.getMaxRobotSpeedMps();
+
         double vYMps = yPercentVelocity * m_mecanumConfigs.getMaxRobotSpeedMps();
         double omegaRps = omegaPercentVelocity * m_mecanumConfigs.getMaxRobotRotationRps();
         ChassisSpeeds speeds;
@@ -150,7 +151,7 @@ public abstract class BaseMecanumDrive extends SubsystemBase {
     /**
      * Simultaneously updates all four motor feedforward kS, kV, and kA values.
      * @param kS The desired kS value.
-     * @param kV The desired kV value.
+     * @param kV The desired k value.
      * @param kA The desired kA value.
      */
     protected void resetFeedForward(double kS, double kV, double kA) {

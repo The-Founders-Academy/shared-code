@@ -24,6 +24,8 @@ public class MecanumConfigs {
     private String m_backLeftName = "bL";
     private String m_backRightName = "bR";
 
+    private double m_ticksPerMeter = 11137.89; // will have to retune if changes to robot are made
+
     public MecanumConfigs() {
     }
 
@@ -54,6 +56,8 @@ public class MecanumConfigs {
     public double getMaxRobotRotationRps() {
         return m_maxRobotRotationRps;
     }
+
+    public double getTicksPerMeter() {return m_ticksPerMeter;}
 
     public String getFrontLeftName() {
         return m_frontLeftName;
